@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome Back, Grade 9</title>
+  
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+
+  <style>
+    :root {
+      --bg-color: #f7f6f2;
+      --card-bg: #ffffff;
+      --text-main: #1e252b;
+      --text-muted: #64748b;
+      --accent-color: #3b5249;
+      --accent-hover: #2a3b34;
+      --border-color: #e2e8f0;
+      --shadow-sm: 0 4px 20px rgba(0, 0, 0, 0.03);
+      --shadow-lg: 0 12px 30px rgba(0, 0, 0, 0.06);
+      --font-en: 'Plus Jakarta Sans', sans-serif;
+      --font-ar: 'Cairo', sans-serif;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-en);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      align-items: center;
+      padding: 2rem 1rem;
+      line-height: 1.6;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 640px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Header Styling */
+    header {
+      text-align: center;
+      margin-bottom: 2.5rem;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-main);
+      margin-bottom: 0.5rem;
+    }
+
+    .subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    /* Quote Card Styling */
+    .quote-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      padding: 2.5rem 2rem;
+      width: 100%;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      position: relative;
+      min-height: 240px;
+      justify-content: space-between;
+    }
+
+    .card-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+      margin-bottom: 1.5rem;
+    }
+
+    .category-badge {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent-color);
+      background: rgba(59, 82, 73, 0.08);
+      padding: 0.35rem 0.85rem;
+      border-radius: 50px;
+    }
+
+    .counter {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .quote-content-wrapper {
+      width: 100%;
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 1rem 0;
+    }
+
+    .quote-text {
+      font-size: 1.35rem;
+      font-weight: 600;
+      color: var(--text-main);
+      transition: opacity 0.25s ease, transform 0.25s ease;
+      opacity: 1;
+      transform: translateY(0);
+      width: 100%;
+    }
+
+    /* RTL specific styling when Arabic text is displayed */
+    .quote-text[dir="rtl"] {
+      font-family: var(--font-ar);
+      font-size: 1.45rem;
+      line-height: 1.8;
+    }
+
+    /* Animation classes */
+    .quote-text.fade-out {
+      opacity: 0;
+      transform: translateY(-8px);
+    }
+
+    .quote-text.fade-in {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Control Button */
+    .btn-new-quote {
+      margin-top: 2rem;
+      background-color: var(--accent-color);
+      color: #ffffff;
+      border: none;
+      padding: 0.9rem 2rem;
+      font-size: 0.9rem;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      border-radius: 50px;
+      cursor: pointer;
+      transition: background-color 0.2s ease, transform 0.1s ease, box-shadow 0.2s ease;
+      box-shadow: var(--shadow-sm);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .btn-new-quote:hover {
+      background-color: var(--accent-hover);
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+    }
+
+    .btn-new-quote:active {
+      transform: scale(0.98);
+    }
+
+    /* Teacher QR Section */
+    .teacher-section {
+      margin-top: 4rem;
+      width: 100%;
+      border-top: 1px dashed var(--border-color);
+      padding-top: 2.5rem;
+      text-align: center;
+    }
+
+    .teacher-section h2 {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.15em;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .qr-container {
+      background: var(--card-bg);
+      padding: 1.25rem;
+      border-radius: 16px;
+      display: inline-block;
+      box-shadow: var(--shadow-sm);
+      border: 1px solid var(--border-color);
+      margin-bottom: 1.25rem;
+    }
+
+    #qrcode img {
+      margin: 0 auto;
+    }
+
+    .btn-download {
+      background: transparent;
+      border: 1px solid var(--border-color);
+      color: var(--text-muted);
+      padding: 0.5rem 1.25rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .btn-download:hover {
+      background-color: #ffffff;
+      color: var(--text-main);
+      border-color: #cbd5e1;
+    }
+
+    @media (max-width: 480px) {
+      h1 {
+        font-size: 1.5rem;
+      }
+      .quote-card {
+        padding: 1.75rem 1.25rem;
+      }
+      .quote-text {
+        font-size: 1.15rem;
+      }
+      .quote-text[dir="rtl"] {
+        font-size: 1.25rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <header>
+      <h1>Welcome Back, Grade 9</h1>
+      <p class="subtitle">A little reminder for your new school year ✦</p>
+    </header>
+
+    <main class="quote-card">
+      <div class="card-meta">
+        <span id="category-badge" class="category-badge">MOTIVATION</span>
+        <span id="quote-counter" class="counter">Quote 1 / 50</span>
+      </div>
+
+      <div class="quote-content-wrapper">
+        <p id="quote-text" class="quote-text">Loading quote...</p>
+      </div>
+
+      <button id="new-quote-btn" class="btn-new-quote">
+        ✦ NEW QUOTE
+      </button>
+    </main>
+
+    <footer class="teacher-section">
+      <h2>SCAN • READ • GET INSPIRED</h2>
+      <div class="qr-container">
+        <div id="qrcode"></div>
+      </div>
+      <div>
+        <button id="download-qr-btn" class="btn-download">Download Printable QR (PNG)</button>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // =========================================================================
+    // CONFIGURATION
+    // Replace the URL below with your deployed public URL after hosting.
+    // =========================================================================
+    const DEPLOYED_URL = "https://your-public-url-here.com";
+
+    // Quote Data Array
+    const quotes = [
+      // English Quotes
+      { text: "Welcome back! The holidays were great. The alarm clock disagrees. 😂", category: "FUNNY", lang: "en" },
+      { text: "New year. New goals. New memories.", category: "MOTIVATION", lang: "en" },
+      { text: "Plot twist: this could be your best year yet.", category: "MOTIVATION", lang: "en" },
+      { text: "School mode: ON. Motivation: loading…", category: "FUNNY", lang: "en" },
+      { text: "You survived summer homework. Just kidding. There was no homework. 😎", category: "FUNNY", lang: "en" },
+      { text: "Your future self is counting on you.", category: "REMINDER", lang: "en" },
+      { text: "Don’t be afraid to ask questions. That’s how smart people grow.", category: "REMINDER", lang: "en" },
+      { text: "Mistakes aren’t failures. They’re part of learning.", category: "REMINDER", lang: "en" },
+      { text: "You don’t need to be perfect. Just keep improving.", category: "MOTIVATION", lang: "en" },
+      { text: "Make this year one you’ll actually remember.", category: "MOTIVATION", lang: "en" },
+      { text: "Be curious. Be kind. Be brave.", category: "REMINDER", lang: "en" },
+      { text: "Your ideas matter. Don’t be afraid to share them.", category: "REMINDER", lang: "en" },
+      { text: "Small steps can lead to big changes.", category: "MOTIVATION", lang: "en" },
+      { text: "Try something new this year. You might surprise yourself.", category: "MOTIVATION", lang: "en" },
+      { text: "Don’t compare your journey to anyone else’s.", category: "REMINDER", lang: "en" },
+      { text: "The best way to learn is to try.", category: "MOTIVATION", lang: "en" },
+      { text: "You’ve got more potential than you think.", category: "MOTIVATION", lang: "en" },
+      { text: "One bad grade doesn’t define you. One great effort can change everything.", category: "REMINDER", lang: "en" },
+      { text: "Don’t just pass the year. Make it count.", category: "MOTIVATION", lang: "en" },
+      { text: "Welcome to Grade 9. Let’s make it unforgettable.", category: "MOTIVATION", lang: "en" },
+
+      // Arabic Quotes (Standard/Motivational)
+      { text: "أهلاً بعودتكم! اشتقنالكم ❤️", category: "REMINDER", lang: "ar" },
+      { text: "سنة جديدة، فرص جديدة، وذكريات جديدة.", category: "MOTIVATION", lang: "ar" },
+      { text: "خلي هالسنة تكون أحلى من اللي قبلها.", category: "MOTIVATION", lang: "ar" },
+      { text: "ما تخاف من الغلط، الغلط جزء من التعلّم.", category: "REMINDER", lang: "ar" },
+      { text: "آمن بنفسك، لأنك قادر تعمل أكتر مما بتتوقع.", category: "MOTIVATION", lang: "ar" },
+      { text: "كل خطوة صغيرة بتقرّبك من هدفك.", category: "MOTIVATION", lang: "ar" },
+      { text: "لا تقارن حالك بغيرك، كل شخص عنده طريقه الخاص.", category: "REMINDER", lang: "ar" },
+      { text: "جرّب، اكتشف، وتعلّم… يمكن تكتشف شي جديد عن حالك.", category: "MOTIVATION", lang: "ar" },
+      { text: "مش لازم تكون الأفضل، المهم تكون عم تتقدّم.", category: "MOTIVATION", lang: "ar" },
+      { text: "خلي فضولك أكبر من خوفك.", category: "MOTIVATION", lang: "ar" },
+      { text: "ما تستسلم من أول محاولة. يمكن النجاح أقرب مما بتفكر.", category: "MOTIVATION", lang: "ar" },
+      { text: "أحلى الذكريات بتبدأ بأيام عادية.", category: "REMINDER", lang: "ar" },
+      { text: "خلي هالسنة سنة بتفتخر فيها بحالك.", category: "MOTIVATION", lang: "ar" },
+      { text: "كلمة حلوة منك ممكن تغيّر نهار شخص تاني.", category: "REMINDER", lang: "ar" },
+      { text: "الغلط مش نهاية الطريق، أوقات بيكون بداية شي أحلى.", category: "REMINDER", lang: "ar" },
+      { text: "كل يوم فرصة جديدة لتكون نسخة أفضل من نفسك.", category: "MOTIVATION", lang: "ar" },
+      { text: "لا تنتظر الوقت المثالي، ابدأ من هلّق.", category: "MOTIVATION", lang: "ar" },
+      { text: "خليك على طبيعتك، لأنك مميز بطريقتك.", category: "REMINDER", lang: "ar" },
+      { text: "تذكّر: النجاح مش بس بالعلامات، النجاح كمان إنك تتعلم وتنمو.", category: "REMINDER", lang: "ar" },
+      { text: "يلا نبلّش سنة جديدة… ونخليها سنة ما بتننسى! 🚀", category: "MOTIVATION", lang: "ar" },
+
+      // Funny Arabic Quotes
+      { text: "رجعنا عالمدرسة… والـalarm رجع عذابنا اليومي 😂", category: "FUNNY", lang: "ar" },
+      { text: "العطلة خلصت… مين قال إنو كانت طويلة؟", category: "FUNNY", lang: "ar" },
+      { text: "صباح الخير… أو بالأحرى، حاولوا تصحوا أول شي 😂", category: "FUNNY", lang: "ar" },
+      { text: "Grade 9 وصل! الله يعين الـteachers 😌", category: "FUNNY", lang: "ar" },
+      { text: "الطاقة لأول يوم: 🔥 بعد أسبوع: وين القهوة؟ 😂", category: "FUNNY", lang: "ar" },
+      { text: "رجعت المدرسة… ورجع معها السؤال الأبدي: «في امتحان بكرا؟»", category: "FUNNY", lang: "ar" },
+      { text: "الدفاتر جديدة، الأقلام جديدة… بس الخط نفسو 😂", category: "FUNNY", lang: "ar" },
+      { text: "إذا كنت ناطر الحماس يجيك، نحنا بعدنا ناطرين معك.", category: "FUNNY", lang: "ar" },
+      { text: "أول يوم مدرسة: متحمسين! بعد أسبوع: بدنا عطلة. 😂", category: "FUNNY", lang: "ar" },
+      { text: "مبروك! فتحتوا Level 9 🎮", category: "FUNNY", lang: "ar" }
+    ];
+
+    let currentQuoteIndex = -1;
+
+    // DOM Elements
+    const quoteTextEl = document.getElementById("quote-text");
+    const categoryBadgeEl = document.getElementById("category-badge");
+    const quoteCounterEl = document.getElementById("quote-counter");
+    const newQuoteBtn = document.getElementById("new-quote-btn");
+    const downloadQrBtn = document.getElementById("download-qr-btn");
+
+    // Display Quote Function with Non-Repeating Random Logic
+    function displayRandomQuote() {
+      let nextIndex;
+      do {
+        nextIndex = Math.floor(Math.random() * quotes.length);
+      } while (nextIndex === currentQuoteIndex && quotes.length > 1);
+
+      currentQuoteIndex = nextIndex;
+      const quote = quotes[currentQuoteIndex];
+
+      // Fade animation sequence
+      quoteTextEl.classList.add("fade-out");
+
+      setTimeout(() => {
+        quoteTextEl.innerText = quote.text;
+        categoryBadgeEl.innerText = quote.category;
+        quoteCounterEl.innerText = `Quote ${currentQuoteIndex + 1} / ${quotes.length}`;
+
+        if (quote.lang === "ar") {
+          quoteTextEl.setAttribute("dir", "rtl");
+          quoteTextEl.style.fontFamily = "var(--font-ar)";
+        } else {
+          quoteTextEl.setAttribute("dir", "ltr");
+          quoteTextEl.style.fontFamily = "var(--font-en)";
+        }
+
+        quoteTextEl.classList.remove("fade-out");
+        quoteTextEl.classList.add("fade-in");
+
+        setTimeout(() => {
+          quoteTextEl.classList.remove("fade-in");
+        }, 250);
+      }, 250);
+    }
+
+    // QR Code Generation
+    function generateQRCode() {
+      const targetUrl = (DEPLOYED_URL && !DEPLOYED_URL.includes("your-public-url-here"))
+        ? DEPLOYED_URL
+        : window.location.href;
+
+      const qrContainer = document.getElementById("qrcode");
+      qrContainer.innerHTML = ""; // Clear existing
+
+      new QRCode(qrContainer, {
+        text: targetUrl,
+        width: 180,
+        height: 180,
+        colorDark: "#1e252b",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+      });
+    }
+
+    // Download QR Code Handler
+    downloadQrBtn.addEventListener("click", () => {
+      const img = document.querySelector("#qrcode img");
+      const canvas = document.querySelector("#qrcode canvas");
+
+      let imgData = "";
+      if (img && img.src) {
+        imgData = img.src;
+      } else if (canvas) {
+        imgData = canvas.toDataURL("image/png");
+      }
+
+      if (imgData) {
+        const link = document.createElement("a");
+        link.href = imgData;
+        link.download = "Welcome_Grade_9_QR.png";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+    });
+
+    // Event Listeners
+    newQuoteBtn.addEventListener("click", displayRandomQuote);
+
+    // Initial Execution
+    window.addEventListener("DOMContentLoaded", () => {
+      displayRandomQuote();
+      generateQRCode();
+    });
+  </script>
+</body>
+</html>
